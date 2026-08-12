@@ -494,13 +494,6 @@ If you plan to distribute or reuse the project publicly, consider adding an appr
 
 ---
 
-## 🔗 Links
-
-- **Source Repository:** GitHub repository for this project
-- **Data Source:** Bama.ir
-
----
-
 ## ⚖️ Data Source & Responsible Scraping
 
 This project uses publicly accessible automotive listing data from Bama.ir for educational and machine learning purposes.
