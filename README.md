@@ -488,9 +488,9 @@ Please keep changes focused and document important modifications.
 
 ## 📄 License
 
-No license is currently specified for this project.
+This project is licensed under the MIT License.
 
-If you plan to distribute or reuse the project publicly, consider adding an appropriate open-source license.
+See the [LICENSE](LICENSE) file for more information.
 
 ---
 
