@@ -28,9 +28,8 @@ def creat_ai():
         model = RandomForestRegressor(n_estimators=100, random_state=0)
         model.fit(x_train, y_train)
         return status, label_encoders, model
-    except Exception as e:
-        status = False
-        return status
+    except Exception:
+        return False, None, None
 def predict_price(car_name, car_year, car_mileage, car_transmission, car_fuel, car_body_status, label_encoders, model):
     if car_name not in label_encoders['name'].classes_:
         print(f"Warning: The car name '{car_name}' is not recognized.")
