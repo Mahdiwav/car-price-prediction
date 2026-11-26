@@ -4,6 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from decouple import config
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import numpy as np
 
 def creat_ai():
     try:
@@ -27,6 +29,17 @@ def creat_ai():
         
         model = RandomForestRegressor(n_estimators=100, random_state=0)
         model.fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+        
+        mae = mean_absolute_error(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        rmse = np.sqrt(mse)
+        r2 = r2_score(y_test, y_pred)
+        
+        print(f"MAE: {mae}")
+        print(f"MSE: {mse}")
+        print(f"RMSE: {rmse}")
+        print(f"R²: {r2}")
         return status, label_encoders, model
     except Exception:
         return False, None, None
@@ -43,6 +56,4 @@ def predict_price(car_name, car_year, car_mileage, car_transmission, car_fuel, c
     input_data = pa.DataFrame([[car_year, car_mileage, car_name_encoded, car_transmission_encoded, car_fuel_encoded,car_body_status_encoded]],columns=['year', 'mileage', 'name', 'transmission', 'fuel', 'body_status'])
     predicted_price = model.predict(input_data)
     return predicted_price[0]
-
-
 
