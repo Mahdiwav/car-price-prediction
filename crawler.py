@@ -9,36 +9,41 @@ PASSWORD = config('PASSWORD')
 PORT = config('PORT')
 
 def connect_to_db():
-    conn = psycopg2.connect(database=DATABASE_NAME,
-                            host=HOST_NAME,
-                            user=USER,
-                            password=PASSWORD,
-                            port=PORT)
-
-    curse = conn.cursor()
-
-    creat_table = '''CREATE TABLE IF NOT EXISTS car(
-        name VARCHAR(255) NOT NULL,
-        year INTEGER NOT NULL,
-        mileage BIGINT NOT NULL,
-        transmission VARCHAR(255) NOT NULL,
-        fuel VARCHAR(255) NOT NULL,
-        body_status VARCHAR(255) NOT NULL,
-        price BIGINT NOT NULL
-        );'''
-
+    conn = None
     try:
+        conn = psycopg2.connect(database=DATABASE_NAME,
+                                host=HOST_NAME,
+                                user=USER,
+                                password=PASSWORD,
+                                port=PORT)
+        curse = conn.cursor()
+    
+        creat_table = '''CREATE TABLE IF NOT EXISTS car(
+            name VARCHAR(255) NOT NULL,
+            year INTEGER NOT NULL,
+            mileage BIGINT NOT NULL,
+            transmission VARCHAR(255) NOT NULL,
+            fuel VARCHAR(255) NOT NULL,
+            body_status VARCHAR(255) NOT NULL,
+            price BIGINT NOT NULL
+            );'''
+
         curse.execute(creat_table)
-        status = True
+        conn.commit()
         print("Table Created")
-        conn.commit()
-        return status, conn, curse
-    except:
-        print("Table already exists or warnning")
-        status = False
-        conn.rollback()
-        conn.commit()
-        return status
+        return True, conn, curse
+    except Exception as e:
+        print(f"Database connection or table setup failed: {e}")
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception as cleanup_error:
+                print(f"Database rollback failed: {cleanup_error}")
+            try:
+                conn.close()
+            except Exception as cleanup_error:
+                print(f"Database connection close failed: {cleanup_error}")
+        return False, None, None
 
 def bama(conn, curse):
     global status
